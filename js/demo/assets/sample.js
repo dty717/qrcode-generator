@@ -36,7 +36,82 @@ var create_qrcode = function(text, typeNumber,
 
 //  return qr.createTableTag();
 //  return qr.createSvgTag();
-  return qr.createImgTag();
+  const canvas = document.createElement('canvas')
+  const ctx = canvas.getContext('2d');
+  var image = new Image();
+  image.src = qr.createDataURL();
+  // console.log(image)
+  test = canvas
+  image.onload = function() {
+    canvas.width = image.width
+    canvas.height = image.height+30
+    ctx.font = '10px serif';
+    ctx.strokeStyle = 'red';
+    var textLen = 0
+    for (let index = 0; index < text.length; index++) {
+      if(text.charCodeAt(index)<255){
+        textLen+=1;
+      }else{
+        textLen+=2;
+      }
+    }
+    if(textLen<25){
+      var shift_len = 24 - textLen
+      ctx.fillText(text,3+shift_len*2.4,image.height+8);
+      
+    }else if(textLen<49){
+      var textLen2 = 0
+      var text1;
+      var text2;
+      for (let index = 0; index < text.length; index++) {
+        if(text.charCodeAt(index)<255){
+          textLen2+=1;
+        }else{
+          textLen2+=2;
+        }
+        if(textLen2>24){
+          text1 = text.substring(0,index);
+          text2 = text.substring(index);
+          if(text.charCodeAt(index)<255){
+            textLen2-=1;
+          }else{
+            textLen2-=2;
+          }
+          break;
+        }
+      }
+      var shift_len1 = 24 - textLen2
+      var shift_len2 = 24 - (textLen-textLen2)
+      ctx.fillText(text1,3+shift_len1*2.4,image.height+8);
+      ctx.fillText(text2,3+shift_len2*2.4,image.height+20);
+    }else{
+      var textLen2 = 0
+      var text1;
+      var text2;
+      for (let index = 0; index < text.length; index++) {
+        if(text.charCodeAt(index)<255){
+          textLen2+=1;
+        }else{
+          textLen2+=2;
+        }
+        if(textLen2>24){
+          text1 = text.substring(0,index);
+          text2 = text.substring(index);
+          if(text.charCodeAt(index)<255){
+            textLen2-=1;
+          }else{
+            textLen2-=2;
+          }
+          break;
+        }
+      }
+      ctx.fillText(text1,3,image.height+8);
+      ctx.fillText(text2,3,image.height+20);
+    }
+    // ctx.fillText(text,3,image.height+20);
+    ctx.drawImage(image,0,0);
+  }
+  return canvas
 };
 
 var update_qrcode = function() {
@@ -47,8 +122,8 @@ var update_qrcode = function() {
   var e = form.elements['e'].value;
   var m = form.elements['m'].value;
   var mb = form.elements['mb'].value;
-  document.getElementById('qr').innerHTML =
-    create_qrcode(text, t, e, m, mb);
+  document.getElementById('qr').innerHTML = ''
+  document.getElementById('qr').appendChild(create_qrcode(text, t, e, m, mb));
 };
 
 var createDataCapsTable = function() {
