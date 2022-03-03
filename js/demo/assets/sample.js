@@ -39,6 +39,7 @@ var create_qrcode = function(text, typeNumber,
   const canvas = document.createElement('canvas')
   const ctx = canvas.getContext('2d');
   var image = new Image();
+  var returnImage = new Image();
   image.src = qr.createDataURL();
   image.onload = function() {
     canvas.width = image.width
@@ -108,8 +109,9 @@ var create_qrcode = function(text, typeNumber,
     }
     // ctx.fillText(text,3,image.height+20);
     ctx.drawImage(image,0,0);
+    returnImage.src = canvas.toDataURL();
   }
-  return canvas
+  return returnImage;
 };
 
 var update_qrcode = function() {
