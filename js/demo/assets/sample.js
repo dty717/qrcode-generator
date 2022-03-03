@@ -12,15 +12,9 @@ var body_loadHander = function() {
   var t = document.forms['qrForm'].elements['t'];
   t.appendChild(crtOpt('' + 0, 'Auto Detect') );
   for (var i = 1; i <= 40; i += 1) {
-    if(i==9){
-      var obj = crtOpt('' + i, '' + i);
-      obj.selected = true;
-      t.appendChild(obj);
-    }else{
-      t.appendChild(crtOpt('' + i, '' + i) );
-    }
+     t.appendChild(crtOpt('' + i, '' + i) );
   }
-  t.value = '0';
+  t.value = '9';
 
   document.getElementById('dataCaps').appendChild(createDataCapsTable() );
 
