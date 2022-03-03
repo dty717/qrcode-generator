@@ -40,8 +40,6 @@ var create_qrcode = function(text, typeNumber,
   const ctx = canvas.getContext('2d');
   var image = new Image();
   image.src = qr.createDataURL();
-  // console.log(image)
-  test = canvas
   image.onload = function() {
     canvas.width = image.width
     canvas.height = image.height+30
